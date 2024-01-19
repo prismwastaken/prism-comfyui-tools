@@ -1,43 +1,53 @@
-"""
-@author: Prism
-@title: Prism's Tools
-"""
-
-import secrets
 import numpy
+import secrets
 import sys
+from server import PromptServer
 
 class RandomNormal:
-    class Config:
-        def __init__(self, **kwargs):
-            self.__dict__.update(kwargs)
-    config = Config(value=0)
-    
     @classmethod
-    def INPUT_TYPES(s):
+    def INPUT_TYPES(cls):
         return {
             "required": {
                 "mean": ("FLOAT", {"default": 0, "min": sys.float_info.min, "max": sys.float_info.max}),
                 "sd": ("FLOAT", {"default": 1, "min": 0, "max": sys.float_info.max}),
                 "round_to": ("INT", {"default": 3, "min": 0, "max": 16}),
-                "value_after_generate": (["randomize", "fixed"],)
+                "control_after_generate": (["randomize", "fixed"],),
+                "value": ("FLOAT", {"default": 0})
             },
+            "hidden": {
+                "id": "UNIQUE_ID"
+            }
         }
 
     RETURN_TYPES = ("FLOAT", "INT",)
     RETURN_NAMES = ("Float", "Int",)
-    #OUTPUT_NODE = True
+    OUTPUT_NODE = True
     FUNCTION = "main"
     CATEGORY = "Prism's Tools"
-    
-    def main(self, mean, sd, round_to, value_after_generate):
-        config = RandomNormal.config
-        if(value_after_generate == "randomize"):
-            rng = numpy.random.default_rng(secrets.randbits(128))
-            config.value = round(rng.normal(mean, sd), round_to)
-        print ("Value generated: " + str(config.value))
-        return (config.value, int(config.value),)
 
+    """
+    Generates a random number with normal distribution
+
+    Arguments:
+        mean (float): The mean value of the set
+        sd (float): Standard deviation (\u03c3) of the sample
+        round (float): Digits to round to
+    """
+    
+    def main(self, id:int, mean, sd, round_to, control_after_generate, value):
+        if(control_after_generate == "randomize"): 
+            rng = numpy.random.default_rng(secrets.randbits(128))
+            output = round(rng.normal(mean, sd), round_to)
+            PromptServer.instance.send_sync("prism-randnormal", {"value":output, "id":id})
+        else:
+            output=value
+
+
+        print ("DEBUG - Value generated: " + str(output))
+
+
+        return (output, int(output))
+    
     def IS_CHANGED(self, **kwargs):
         return float('nan')
     

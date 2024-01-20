@@ -7,10 +7,10 @@ class RandomNormal:
     def INPUT_TYPES(cls):
         return {
             "required": {
+                "seed": ("INT", {"default": 0}),
                 "mean": ("FLOAT", {"default": 0, "min": sys.float_info.min, "max": sys.float_info.max}),
                 "sd": ("FLOAT", {"default": 1, "min": 0, "max": sys.float_info.max}),
                 "round_to": ("INT", {"default": 3, "min": 0, "max": 16}),               
-                "seed": ("INT", {"default": 0}),
                 "last_value": ("FLOAT", {"default": 0})
             },
             "hidden": {
@@ -28,10 +28,10 @@ class RandomNormal:
     Generates a random number with normal distribution
 
     Arguments:
+        seed (int): Seed value for the coloring transform
         mean (float): The mean value of the set
         sd (float): Standard deviation (\u03c3) of the sample
         round (float): Digits to round the output to
-        seed (int): Seed value for the coloring transform
         last_value (float): The last value generated; changing it does nothing
     """
     

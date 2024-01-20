@@ -11,7 +11,6 @@ class RandomNormal:
                 "mean": ("FLOAT", {"default": 0, "min": sys.float_info.min, "max": sys.float_info.max}),
                 "sd": ("FLOAT", {"default": 1, "min": 0, "max": sys.float_info.max}),
                 "round_to": ("INT", {"default": 3, "min": 0, "max": 16}),
-                #"control_after_generate": (["randomize", "fixed"],),
                 "value": ("FLOAT", {"default": 0})
             },
             "hidden": {
@@ -24,7 +23,7 @@ class RandomNormal:
     OUTPUT_NODE = True
     FUNCTION = "main"
     CATEGORY = "Prism's Tools"
-
+    
     """
     Generates a random number with normal distribution
 
@@ -35,12 +34,12 @@ class RandomNormal:
     """
     
     def main(self, id:int, mean, sd, round_to, value):
-        if(control_after_generate == "randomize"): 
-            rng = numpy.random.default_rng(secrets.randbits(128))
-            output = round(rng.normal(mean, sd), round_to)
+        #if(control_after_generate == "randomize"): 
+            #rng = numpy.random.default_rng(secrets.randbits(128))
+            #output = round(rng.normal(mean, sd), round_to)
             #PromptServer.instance.send_sync("prism-randnormal", {"value":output, "id":id})
-        else:
-            output=value
+        #else:
+        output=value
 
 
         print ("DEBUG - Value generated: " + str(output))

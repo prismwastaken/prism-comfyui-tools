@@ -11,7 +11,7 @@ class RandomNormal:
                 "mean": ("FLOAT", {"default": 0, "min": sys.float_info.min, "max": sys.float_info.max}),
                 "sd": ("FLOAT", {"default": 1, "min": 0, "max": sys.float_info.max}),
                 "round_to": ("INT", {"default": 3, "min": 0, "max": 16}),
-                "control_after_generate": (["randomize", "fixed"],),
+                #"control_after_generate": (["randomize", "fixed"],),
                 "value": ("FLOAT", {"default": 0})
             },
             "hidden": {
@@ -34,11 +34,11 @@ class RandomNormal:
         round (float): Digits to round to
     """
     
-    def main(self, id:int, mean, sd, round_to, control_after_generate, value):
+    def main(self, id:int, mean, sd, round_to, value):
         if(control_after_generate == "randomize"): 
             rng = numpy.random.default_rng(secrets.randbits(128))
             output = round(rng.normal(mean, sd), round_to)
-            PromptServer.instance.send_sync("prism-randnormal", {"value":output, "id":id})
+            #PromptServer.instance.send_sync("prism-randnormal", {"value":output, "id":id})
         else:
             output=value
 
@@ -51,5 +51,5 @@ class RandomNormal:
     def IS_CHANGED(self, **kwargs):
         return float('nan')
     
-NODE_CLASS_MAPPINGS = { "Random (Normal Distribution)": RandomNormal }
-NODE_DISPLAY_NAME_MAPPINGS = { "RandomNormal": "Random (Normal Distribution)" }
+NODE_CLASS_MAPPINGS = { "Prism-RandomNormal": RandomNormal }
+NODE_DISPLAY_NAME_MAPPINGS = { "Prism-RandomNormal": "Random (Normal Distribution)" }

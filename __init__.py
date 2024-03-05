@@ -29,12 +29,4 @@ if init():
         except Exception as e:
             traceback.print_exc()
 
-def py_search(rootdir):
-    file_list = []
-    for root, directories, file in os.walk(rootdir):
-        for file in file:
-            if(file.endswith(".py")):
-                file_list.append(file)
-    return file_list
-
 __all__ = ["NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS"]

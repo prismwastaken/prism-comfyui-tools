@@ -9,8 +9,11 @@ NODE_CLASS_MAPPINGS = {}
 NODE_DISPLAY_NAME_MAPPINGS = {}
 
 if init():
-    py = get_ext_dir("py")
-    files = glob.glob("*.py", root_dir=py, recursive=False)
+    files = []
+    for root, directories, file in os.walk("py"):
+        for file in file:
+            if(file.endswith(".py")):
+                files.append(file)
 
     for file in files:
         try:
@@ -25,5 +28,13 @@ if init():
                     NODE_DISPLAY_NAME_MAPPINGS.update(module.NODE_DISPLAY_NAME_MAPPINGS)
         except Exception as e:
             traceback.print_exc()
+
+def py_search(rootdir):
+    file_list = []
+    for root, directories, file in os.walk(rootdir):
+        for file in file:
+            if(file.endswith(".py")):
+                file_list.append(file)
+    return file_list
 
 __all__ = ["NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS"]

@@ -9,11 +9,8 @@ NODE_CLASS_MAPPINGS = {}
 NODE_DISPLAY_NAME_MAPPINGS = {}
 
 if init():
-    files = []
-    for root, directories, file in os.walk("py"):
-        for file in file:
-            if(file.endswith(".py")):
-                files.append(file)
+    py = get_ext_dir("py")
+    files = glob.glob("*.py", root_dir=py, recursive=False)
 
     for file in files:
         try:
